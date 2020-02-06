@@ -1,0 +1,21 @@
+/* https://colorhunt.co/palette/170083 */
+
+/* primary: #633a82 */
+/* secondary: #72b5b7 */
+/* light2: #40e0d0 */
+/* light: #f1fcfc */
+
+body {
+  background-color: #f1fcfc;
+}
+
+.btn-outline-primary {
+  color: #633a82;
+  border-color: #633a82;
+}
+
+.btn-outline-primary:hover {
+  color: white;
+  background-color: #633a82;
+  border-color: #633a82;
+}
