@@ -7,6 +7,11 @@ export default (state = {}, action) => {
         ...state,
         profile: action.payload
       };
+    case "UPDATE_USER":
+      return {
+        ...state,
+        profile: action.payload
+      };
     // case "INCREASE_QTY":
     //   product = products.find(product => product._id === action.payload);
     //   product.qty++;

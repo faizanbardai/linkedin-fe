@@ -3,6 +3,7 @@ import { loadProfile } from "../actions";
 import { connect } from "react-redux";
 import { Card, Image, Button } from "react-bootstrap";
 import Experience from "../components/Experience";
+import UpdateProfile from "../components/UpdateProfile";
 
 const mapStateToProps = state => {
   return {
@@ -15,6 +16,8 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Profile extends Component {
+  state = { show: false };
+  setShow = () => this.setState({ show: !this.state.show });
   render() {
     const {
       name,
@@ -26,12 +29,12 @@ class Profile extends Component {
       experiences
     } = this.props.profile;
     return (
-      <section className="container my-2">
-        <div className="row d-flex flex-wrap justify-content-center">
-          <div className="mx-3 mb-3" style={{ maxWidth: "300px" }}>
+      <section className="container my-3">
+        <div className="row d-flex justify-content-center">
+          <div className="col-sm-12 col-md-4 mb-3" style={{}}>
             <Image
               src={imageProfile}
-              className="p-3"
+              className="p-4"
               roundedCircle
               style={{ width: "100%" }}
             />
@@ -46,22 +49,33 @@ class Profile extends Component {
               <Card.Footer className="text-muted">{area}</Card.Footer>
             </Card>
             <Button
+              onClick={this.setShow}
               variant="outline-primary"
               block
               className="my-2 rounded-pill"
             >
               Edit Profile
             </Button>
+            {this.props.profile.name && (
+              <UpdateProfile
+                show={this.state.show}
+                setShow={this.setShow}
+                email={this.props.email}
+                profile={this.props.profile}
+              />
+            )}
           </div>
-          <Card className="mx-3">
-            <Card.Body>
-              <Card.Title>Experience</Card.Title>
-              {experiences &&
-                experiences.map(experience => (
-                  <Experience key={experience._id} experience={experience} />
-                ))}
-            </Card.Body>
-          </Card>
+          <div className="col-sm-12 col-md-8" style={{}}>
+            <Card>
+              <Card.Body>
+                <Card.Title>Experience</Card.Title>
+                {experiences &&
+                  experiences.map(experience => (
+                    <Experience key={experience._id} experience={experience} />
+                  ))}
+              </Card.Body>
+            </Card>
+          </div>
         </div>
       </section>
     );
