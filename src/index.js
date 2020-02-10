@@ -11,14 +11,19 @@ import {
 import "./index.css";
 import Profile from "./pages/Profile";
 import PageNotFound from "./pages/PageNotFound";
-import Feed from "./pages/Feed";
+// import Feed from "./pages/Feed";
+import Login from "./pages/Login";
+import CreateAccount from "./pages/CreateAccount";
 
 ReactDOM.render(
   <Provider store={store}>
     <Router>
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Switch>
-          <Route path="/" exact component={Feed} />
+          <Route path="/login" exact component={Login} />
+          <Route path="/create-account" exact component={CreateAccount} />
+
+          {/* <Route path="/feed" exact component={Feed} /> */}
           <Route path="/profile" component={Profile} />
           <Route component={PageNotFound} />
         </Switch>

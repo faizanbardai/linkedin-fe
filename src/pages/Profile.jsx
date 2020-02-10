@@ -31,7 +31,7 @@ class Profile extends Component {
     return (
       <section className="container my-3">
         <div className="row d-flex justify-content-center">
-          <div className="col-sm-12 col-md-4 mb-3" style={{}}>
+          <div className="col-sm-12 col-md-3 mb-3">
             <Image
               src={imageProfile}
               className="p-4"
@@ -65,7 +65,7 @@ class Profile extends Component {
               />
             )}
           </div>
-          <div className="col-sm-12 col-md-8" style={{}}>
+          <div className="col-sm-12 col-md-9">
             <Card>
               <Card.Body>
                 <Card.Title>Experience</Card.Title>
