@@ -12,7 +12,6 @@ export const loadProfile = email => {
   };
 };
 export const updateProfile = (email, body) => {
-  console.log(body);
   return async dispatch => {
     const baseURL = process.env.REACT_APP_BASE_URL;
     const response = await fetch(baseURL + "/user/" + email, {
@@ -23,10 +22,39 @@ export const updateProfile = (email, body) => {
       body: JSON.stringify(body)
     });
     const updatedProfile = await response.json();
-    console.log(updatedProfile);
     dispatch({
       type: "UPDATE_USER",
       payload: updatedProfile
     });
+  };
+};
+export const updateExperience = (_id, body) => {
+  return async dispatch => {
+    const baseURL = process.env.REACT_APP_BASE_URL;
+    const response = await fetch(baseURL + "/experience/" + _id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    });
+    if (response.ok) {
+      dispatch({
+        type: "UPDATE_EXPERIENCE"
+      });
+    } else alert("Something went wrong!");
+  };
+};
+export const deleteExperience = _id => {
+  return async dispatch => {
+    const baseURL = process.env.REACT_APP_BASE_URL;
+    const response = await fetch(baseURL + "/experience/" + _id, {
+      method: "DELETE"
+    });
+    if (response.ok) {
+      dispatch({
+        type: "DELETE_EXPERIENCE"
+      });
+    } else alert("Something went wrong!");
   };
 };
