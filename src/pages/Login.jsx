@@ -1,4 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { saveToken, saveUser } from "../actions";
+
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -13,7 +17,6 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import BackgroundImage from "../img/background.jpg";
-import { Link } from "react-router-dom";
 
 function Copyright() {
   return (
@@ -61,9 +64,55 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SignInSide() {
+const mapStateToProps = state => {
+  return { token: state.token };
+};
+
+const mapDispatchToProps = dispatch => ({
+  saveToken: token => dispatch(saveToken(token)),
+  saveUser: user => dispatch(saveUser(user))
+});
+
+const Login = props => {
   const classes = useStyles();
 
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const baseURL = process.env.REACT_APP_BASE_URL;
+    let response;
+    try {
+      response = await fetch(baseURL + "/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          username,
+          password
+        })
+      });
+      console.log(response);
+      console.log(response.status);
+      console.log(response.statusText);
+      switch (response.status) {
+        case 200:
+          // OK
+          response = await response.json();
+          props.saveUser(response.user);
+          localStorage.setItem("token", response.token);
+          props.saveToken(response.token);
+          break;
+        default:
+          console.log("Some error");
+      }
+    } catch (error) {
+      //server down error
+      alert(error.toString());
+    }
+  };
+  if (props.token) return <Redirect push to="/" />;
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -76,8 +125,10 @@ export default function SignInSide() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form} noValidate>
+          <form className={classes.form} onSubmit={e => handleSubmit(e)}>
             <TextField
+              value={username}
+              onChange={e => setUsername(e.target.value)}
               variant="outlined"
               margin="normal"
               required
@@ -89,6 +140,8 @@ export default function SignInSide() {
               autoFocus
             />
             <TextField
+              value={password}
+              onChange={e => setPassword(e.target.value)}
               variant="outlined"
               margin="normal"
               required
@@ -132,4 +185,6 @@ export default function SignInSide() {
       </Grid>
     </Grid>
   );
-}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { updateExperience, loadProfile } from "../actions";
+// import { updateExperience, loadProfile } from "../actions";
 import { connect } from "react-redux";
 import { Modal, Button, Form, Row } from "react-bootstrap";
 import moment from "moment";
 
 const mapDispatchToProps = dispatch => ({
-  updateExperience: (_id, body) => dispatch(updateExperience(_id, body)),
-  loadProfile: email => dispatch(loadProfile(email))
+  // updateExperience: (_id, body) => dispatch(updateExperience(_id, body)),
+  // loadProfile: email => dispatch(loadProfile(email))
 });
 
 const mapStateToProps = state => {

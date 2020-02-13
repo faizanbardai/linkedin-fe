@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { Row } from "react-bootstrap";
 import { connect } from "react-redux";
-import { updateProfile } from "../actions";
+// import { updateProfile } from "../actions";
 
 const mapDispatchToProps = dispatch => ({
-  updateProfile: (email, body) => dispatch(updateProfile(email, body))
+  // updateProfile: (email, body) => dispatch(updateProfile(email, body))
 });
 
 class UpdateProfile extends Component {

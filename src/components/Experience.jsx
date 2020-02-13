@@ -3,11 +3,11 @@ import { Image, Card, Button } from "react-bootstrap";
 import Moment from "react-moment";
 import { connect } from "react-redux";
 import UpdateExperience from "../components/UpdateExperience";
-import { loadProfile, deleteExperience } from "../actions";
+// import { loadProfile, deleteExperience } from "../actions";
 
 const mapDispatchToProps = dispatch => ({
-  deleteExperience: _id => dispatch(deleteExperience(_id)),
-  loadProfile: email => dispatch(loadProfile(email))
+  // deleteExperience: _id => dispatch(deleteExperience(_id)),
+  // loadProfile: email => dispatch(loadProfile(email))
 });
 
 const mapStateToProps = state => {

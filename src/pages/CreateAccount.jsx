@@ -1,4 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { saveToken, saveUser } from "../actions";
+
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,7 +16,6 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { Link } from "react-router-dom";
 
 function Copyright() {
   return (
@@ -47,9 +50,60 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SignUp() {
-  const classes = useStyles();
+const mapDispatchToProps = dispatch => ({
+  saveToken: token => dispatch(saveToken(token)),
+  saveUser: user => dispatch(saveUser(user))
+});
 
+const mapStateToProps = state => {
+  return { token: state.token };
+};
+
+const CreateAccount = props => {
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const baseURL = process.env.REACT_APP_BASE_URL;
+    let response;
+    try {
+      response = await fetch(baseURL + "/user/createAccount", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          username,
+          password,
+          firstName,
+          lastName
+        })
+      });
+    } catch (error) {
+      //server down error
+      alert(error.toString());
+    }
+    if (response && response.ok) {
+      response = await response.json();
+      if (response.token) {
+        props.saveUser(response.user);
+        localStorage.setItem("token", response.token);
+        props.saveToken(response.token);
+      } else {
+        //Express Validator Messages
+        alert(response.message.toString());
+      }
+    } else if (response) {
+      response = await response.json();
+      console.log(response.errors);
+      alert(JSON.stringify(response.errors));
+    }
+  };
+
+  const classes = useStyles();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  if (props.token) return <Redirect push to="/" />;
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -60,10 +114,16 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form
+          className={classes.form}
+          // noValidate
+          onSubmit={e => handleSubmit(e)}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
+                value={firstName}
+                onChange={e => setFirstName(e.target.value)}
                 autoComplete="fname"
                 name="firstName"
                 variant="outlined"
@@ -76,6 +136,8 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
+                value={lastName}
+                onChange={e => setLastName(e.target.value)}
                 variant="outlined"
                 required
                 fullWidth
@@ -87,6 +149,8 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                value={username}
+                onChange={e => setUsername(e.target.value)}
                 variant="outlined"
                 required
                 fullWidth
@@ -98,6 +162,8 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                value={password}
+                onChange={e => setPassword(e.target.value)}
                 variant="outlined"
                 required
                 fullWidth
@@ -138,4 +204,6 @@ export default function SignUp() {
       </Box>
     </Container>
   );
-}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateAccount);
