@@ -55,6 +55,7 @@ class MainComponent extends Component {
           case 401:
             // unauthorized
             localStorage.removeItem("token");
+            this.props.saveToken(null);
             break;
           default:
             console.log("Some error");

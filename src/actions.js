@@ -1,5 +1,3 @@
-// export const decreaseQty = _id => ({ type: "DECREASE_QTY", payload: _id });
-// export const hideProductToast = _id => ({ type: "HIDE_PRODUCT_TOAST" });
 export const saveToken = token => ({ type: "SAVE_TOKEN", payload: token });
 export const saveUser = user => ({ type: "SAVE_USER", payload: user });
 // export const loadProfile = email => {
@@ -13,23 +11,37 @@ export const saveUser = user => ({ type: "SAVE_USER", payload: user });
 //     });
 //   };
 // };
-// export const updateProfile = (email, body) => {
-//   return async dispatch => {
-//     const baseURL = process.env.REACT_APP_BASE_URL;
-//     const response = await fetch(baseURL + "/user/" + email, {
-//       method: "PUT",
-//       headers: {
-//         "Content-Type": "application/json"
-//       },
-//       body: JSON.stringify(body)
-//     });
-//     const updatedProfile = await response.json();
-//     dispatch({
-//       type: "UPDATE_USER",
-//       payload: updatedProfile
-//     });
-//   };
-// };
+export const updateProfile = (body, token) => {
+  return async dispatch => {
+    const baseURL = process.env.REACT_APP_BASE_URL;
+    const response = await fetch(baseURL + "/user", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify(body)
+    });
+    console.log(response.status);
+    console.log(response.statusText);
+    switch (response.status) {
+      case 200:
+        // OK
+        const updatedProfile = await response.json();
+        dispatch({
+          type: "SAVE_USER",
+          payload: updatedProfile
+        });
+        break;
+      case 401:
+        // unauthorized
+        alert("Unauthorized");
+        break;
+      default:
+        alert("Some error");
+    }
+  };
+};
 // export const updateExperience = (_id, body) => {
 //   return async dispatch => {
 //     const baseURL = process.env.REACT_APP_BASE_URL;

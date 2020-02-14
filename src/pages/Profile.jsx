@@ -43,7 +43,7 @@ const Profile = props => {
             <Card.Footer className="text-muted">{area}</Card.Footer>
           </Card>
           <Button
-            onClick={setShow}
+            onClick={() => setShow(true)}
             variant="outline-primary"
             block
             className="my-2 rounded-pill"
@@ -51,7 +51,7 @@ const Profile = props => {
             Edit Profile
           </Button>
 
-          {/* <UpdateProfile show={show} setShow={setShow} /> */}
+          {props.user._id && <UpdateProfile show={show} setShow={setShow} />}
         </div>
         <div className="col-sm-12 col-md-9">
           <Card>

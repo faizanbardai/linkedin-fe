@@ -2,11 +2,18 @@ import React, { Component } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { Row } from "react-bootstrap";
 import { connect } from "react-redux";
-// import { updateProfile } from "../actions";
+import { updateProfile } from "../actions";
 
 const mapDispatchToProps = dispatch => ({
-  // updateProfile: (email, body) => dispatch(updateProfile(email, body))
+  updateProfile: (body, token) => dispatch(updateProfile(body, token))
 });
+
+const mapStateToProps = state => {
+  return {
+    user: state.user,
+    token: state.token
+  };
+};
 
 class UpdateProfile extends Component {
   state = {};
@@ -20,19 +27,18 @@ class UpdateProfile extends Component {
   };
   handleSubmit = async e => {
     e.preventDefault();
-    const email = this.props.email;
-    const { name, surname, title, bio, area } = this.state;
-    const body = { name, surname, title, bio, area };
-    await this.props.updateProfile(email, body);
+    const { firstName, lastName, title, bio, area } = this.state;
+    const body = { firstName, lastName, title, bio, area };
+    await this.props.updateProfile(body, this.props.token);
     this.props.setShow();
   };
   componentDidMount = async () => {
-    const { name, surname, title, bio, area } = this.props.profile;
-    this.setState({ name, surname, title, bio, area });
+    const { firstName, lastName, title, bio, area } = this.props.user;
+    this.setState({ firstName, lastName, title, bio, area });
   };
   render() {
     const { show, setShow } = this.props;
-    const { name, surname, title, bio, area } = this.state;
+    const { firstName, lastName, title, bio, area } = this.state;
     return (
       <Modal size="xl" centered show={show} onHide={setShow}>
         <Modal.Header closeButton>
@@ -44,10 +50,10 @@ class UpdateProfile extends Component {
               <Form.Group className="col-sm-12 col-md-6">
                 <Form.Label>First Name</Form.Label>
                 <Form.Control
-                  name="name"
+                  name="firstName"
                   type="text"
                   placeholder="First Name"
-                  value={name}
+                  value={firstName}
                   onChange={this.handleChange}
                 />
               </Form.Group>
@@ -56,9 +62,9 @@ class UpdateProfile extends Component {
                 <Form.Label>Last Name</Form.Label>
                 <Form.Control
                   type="text"
-                  name="surname"
+                  name="lastName"
                   placeholder="Last Name"
-                  value={surname}
+                  value={lastName}
                   onChange={this.handleChange}
                 />
               </Form.Group>
@@ -115,4 +121,4 @@ class UpdateProfile extends Component {
   }
 }
 
-export default connect(null, mapDispatchToProps)(UpdateProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateProfile);
