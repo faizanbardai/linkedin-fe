@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/linkedin-fe/precache-manifest.192b5ba88cdc1500ffaa5305189c4320.js"
+  "/linkedin-fe/precache-manifest.d6c11c3efc31183d1b18a669b80294fa.js"
 );
 
 self.addEventListener('message', (event) => {
