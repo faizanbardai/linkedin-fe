@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Card, Image, Button } from "react-bootstrap";
 import Experience from "../components/Experience";
 import UpdateProfile from "../components/UpdateProfile";
+import { Redirect } from "react-router-dom";
 
 const mapStateToProps = state => {
   return {
@@ -12,7 +13,7 @@ const mapStateToProps = state => {
 
 const Profile = props => {
   const [show, setShow] = useState(false);
-
+  if (props.user === null) return <div>Loading...</div>;
   const {
     firstName,
     lastName,
@@ -51,7 +52,9 @@ const Profile = props => {
             Edit Profile
           </Button>
 
-          {props.user._id && <UpdateProfile show={show} setShow={setShow} />}
+          {props.user.username && (
+            <UpdateProfile show={show} setShow={setShow} />
+          )}
         </div>
         <div className="col-sm-12 col-md-9">
           <Card>

@@ -1,10 +1,11 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { saveToken } from "../actions";
+import { saveToken, saveUser } from "../actions";
 
 const mapDispatchToProps = dispatch => ({
-  saveToken: token => dispatch(saveToken(token))
+  saveToken: token => dispatch(saveToken(token)),
+  saveUser: user => dispatch(saveUser(user))
 });
 
 const mapStateToProps = state => {
@@ -21,6 +22,7 @@ function Feed(props) {
           onClick={() => {
             localStorage.removeItem("token");
             props.saveToken(null);
+            props.saveUser(null);
           }}
         >
           Logout

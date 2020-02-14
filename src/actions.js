@@ -29,7 +29,7 @@ export const updateProfile = (body, token) => {
         // OK
         const updatedProfile = await response.json();
         dispatch({
-          type: "SAVE_USER",
+          type: "UPDATE_USER",
           payload: updatedProfile
         });
         break;

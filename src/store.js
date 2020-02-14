@@ -8,14 +8,15 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const initialState = {
   token: "",
-  user: {
-    firstName: null,
-    lastName: null,
-    bio: null,
-    area: null,
-    title: null,
-    experiences: null
-  }
+  user: null
+  // user: {
+  //   firstName: null,
+  //   lastName: null,
+  //   bio: null,
+  //   area: null,
+  //   title: null,
+  //   experiences: null
+  // }
   // feed: { allFeeds: null, selectedFeed: null }
 };
 
