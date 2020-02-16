@@ -190,7 +190,7 @@ const CreateAccount = props => {
           >
             Sign Up
           </Button>
-          <a target="_blank " href="http://www.yahoo.com">
+          <a href={`${process.env.REACT_APP_BASE_URL}/auth/facebook`}>
             <Button
               variant="contained"
               color="primary"

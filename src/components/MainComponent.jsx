@@ -4,14 +4,19 @@ import PageNotFound from "../pages/PageNotFound";
 import Feed from "../pages/Feed";
 import Login from "../pages/Login";
 import CreateAccount from "../pages/CreateAccount";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { saveToken, saveUser } from "../actions";
+import CBRetrun from "./CBRetrun";
 
 const mapDispatchToProps = dispatch => ({
   saveToken: token => dispatch(saveToken(token)),
   saveUser: user => dispatch(saveUser(user))
 });
+
+const mapStateToProps = state => {
+  return { token: state.token };
+};
 
 class MainComponent extends Component {
   render() {
@@ -20,6 +25,9 @@ class MainComponent extends Component {
         <Switch>
           <Route path="/" exact component={Feed} />
           <Route path="/login" exact component={Login} />
+          <Route path="/auth/facebook/callback/:accessToken" exact>
+            {this.props.token ? <Redirect to="/" /> : <CBRetrun />}
+          </Route>
           <Route path="/create-account" exact component={CreateAccount} />
           <Route path="/profile" component={Profile} />
           <Route component={PageNotFound} />
@@ -67,4 +75,4 @@ class MainComponent extends Component {
     }
   };
 }
-export default connect(null, mapDispatchToProps)(MainComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(MainComponent);

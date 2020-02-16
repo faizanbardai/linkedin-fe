@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { Card, Image, Button } from "react-bootstrap";
 import Experience from "../components/Experience";
 import UpdateProfile from "../components/UpdateProfile";
-import { Redirect } from "react-router-dom";
 
 const mapStateToProps = state => {
   return {
