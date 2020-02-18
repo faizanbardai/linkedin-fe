@@ -50,9 +50,6 @@ class MainComponent extends Component {
           },
           body: null
         });
-        console.log(response);
-        console.log(response.status);
-        console.log(response.statusText);
         switch (response.status) {
           case 200:
             // OK
