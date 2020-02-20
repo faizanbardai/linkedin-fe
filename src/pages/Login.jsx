@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { saveToken, saveUser } from "../actions";
+import { login } from "../components/api";
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -80,19 +81,13 @@ const Login = props => {
   const [password, setPassword] = useState("");
   const handleSubmit = async e => {
     e.preventDefault();
-    const baseURL = process.env.REACT_APP_BASE_URL;
     let response;
     try {
-      response = await fetch(baseURL + "/user/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          username,
-          password
-        })
-      });
+      const body = {
+        username,
+        password
+      };
+      response = await login(body);
       console.log(response);
       console.log(response.status);
       console.log(response.statusText);

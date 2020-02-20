@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { saveToken, saveUser } from "../actions";
+import { createAccount } from "../components/api";
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -62,21 +63,15 @@ const mapStateToProps = state => {
 const CreateAccount = props => {
   const handleSubmit = async e => {
     e.preventDefault();
-    const baseURL = process.env.REACT_APP_BASE_URL;
     let response;
     try {
-      response = await fetch(baseURL + "/user/createAccount", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          username,
-          password,
-          firstName,
-          lastName
-        })
-      });
+      const body = {
+        username,
+        password,
+        firstName,
+        lastName
+      };
+      response = await createAccount(body);
     } catch (error) {
       //server down error
       alert(error.toString());

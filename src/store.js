@@ -7,7 +7,7 @@ import tokenReducer from "./reducers/token";
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const initialState = {
-  token: "",
+  token: null,
   user: null
   // user: {
   //   firstName: null,
