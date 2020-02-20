@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { saveToken, saveUser } from "../actions";
 import CBRetrun from "./CBRetrun";
+import { refreshToken } from "./api";
 
 const mapDispatchToProps = dispatch => ({
   saveToken: token => dispatch(saveToken(token)),
@@ -39,17 +40,9 @@ class MainComponent extends Component {
     const tokenFromStorage = localStorage.getItem("token");
     if (tokenFromStorage) {
       this.props.saveToken(tokenFromStorage);
-      const baseURL = process.env.REACT_APP_BASE_URL;
       let response;
       try {
-        response = await fetch(baseURL + "/user/token", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + tokenFromStorage
-          },
-          body: null
-        });
+        response = await refreshToken(tokenFromStorage);
         switch (response.status) {
           case 200:
             // OK

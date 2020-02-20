@@ -1,7 +1,6 @@
 const baseURL = process.env.REACT_APP_BASE_URL;
-const tokenFromStorage = localStorage.getItem("token");
 
-export const refreshToken = async () => {
+export const refreshToken = async tokenFromStorage => {
   return await fetch(baseURL + "/user/token", {
     method: "POST",
     headers: {
