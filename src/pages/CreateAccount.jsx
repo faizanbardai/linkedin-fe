@@ -57,7 +57,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => {
-  return { token: state.token };
+  return { user: state.user };
 };
 
 const CreateAccount = props => {
@@ -72,24 +72,32 @@ const CreateAccount = props => {
         lastName
       };
       response = await api_createAccount(body);
-    } catch (error) {
-      //server down error
-      alert(error.toString());
-    }
-    if (response && response.ok) {
-      response = await response.json();
-      if (response.token) {
-        props.saveUser(response.user);
-        localStorage.setItem("token", response.token);
-        props.saveToken(response.token);
-      } else {
-        //Express Validator Messages
-        alert(response.message.toString());
+      switch (response.status) {
+        case 200: // OK
+          response = await response.json();
+          if (response.token) {
+            props.saveUser(response.user);
+            localStorage.setItem("token", response.token);
+          } else {
+            alert("some error");
+            console.log(response);
+          }
+          break;
+        case 422: // Unprocessable Entity
+          alert("Unprocessable Entity. Check console. ");
+          response = await response.json();
+          console.log(response.errors);
+          break;
+        case 409: // Conflict
+          response = await response.json();
+          alert(response.message);
+          break;
+        default:
+          alert("Some error");
       }
-    } else if (response) {
-      response = await response.json();
-      console.log(response.errors);
-      alert(JSON.stringify(response.errors));
+    } catch (error) {
+      // server down error
+      alert(error);
     }
   };
 
@@ -98,7 +106,7 @@ const CreateAccount = props => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  if (props.token) return <Redirect push to="/" />;
+  if (props.user) return <Redirect push to="/" />;
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -113,6 +121,7 @@ const CreateAccount = props => {
           className={classes.form}
           // noValidate
           onSubmit={e => handleSubmit(e)}
+          // onSubmit={e => e.preventDefault()}
         >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
@@ -127,6 +136,7 @@ const CreateAccount = props => {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                inputProps={{ maxLength: 50 }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -140,6 +150,7 @@ const CreateAccount = props => {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
+                inputProps={{ maxLength: 50 }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -153,6 +164,7 @@ const CreateAccount = props => {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                inputProps={{ type: "email" }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -167,14 +179,10 @@ const CreateAccount = props => {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                inputProps={{ minLength: 8 }}
               />
             </Grid>
-            <Grid item xs={12}>
-              {/* <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              /> */}
-            </Grid>
+            <Grid item xs={12}></Grid>
           </Grid>
           <Button
             type="submit"
