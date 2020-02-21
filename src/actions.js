@@ -4,8 +4,6 @@ export const saveUser = user => ({ type: "SAVE_USER", payload: user });
 export const updateProfile = (body, token) => {
   return async dispatch => {
     const response = await api_updateProfile(body, token);
-    console.log(response.status);
-    console.log(response.statusText);
     switch (response.status) {
       case 200:
         // OK

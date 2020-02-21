@@ -39,21 +39,16 @@ class MainComponent extends Component {
   componentDidMount = async () => {
     const tokenFromStorage = localStorage.getItem("token");
     if (tokenFromStorage) {
-      this.props.saveToken(tokenFromStorage);
       let response;
       try {
         response = await api_refreshToken(tokenFromStorage);
         switch (response.status) {
-          case 200:
-            // OK
+          case 200: // OK
             response = await response.json();
             this.props.saveUser(response.user);
-            this.props.saveToken(response.token);
             break;
-          case 401:
-            // unauthorized
+          case 401: // unauthorized
             localStorage.removeItem("token");
-            this.props.saveToken(null);
             break;
           default:
             console.log("Some error");

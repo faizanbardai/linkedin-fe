@@ -1,19 +1,18 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { saveToken, saveUser } from "../actions";
+import { saveUser } from "../actions";
 
 const mapDispatchToProps = dispatch => ({
-  saveToken: token => dispatch(saveToken(token)),
   saveUser: user => dispatch(saveUser(user))
 });
 
 const mapStateToProps = state => {
-  return { token: state.token };
+  return { user: state.user };
 };
 
 function Feed(props) {
-  if (props.token || localStorage.getItem("token"))
+  if (localStorage.getItem("token") || props.user)
     return (
       <div>
         I'll show all the <strong>feed</strong>.
@@ -21,7 +20,6 @@ function Feed(props) {
         <button
           onClick={() => {
             localStorage.removeItem("token");
-            props.saveToken(null);
             props.saveUser(null);
           }}
         >

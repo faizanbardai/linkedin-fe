@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { saveToken, saveUser } from "../actions";
+import { saveUser } from "../actions";
 import { api_login } from "../components/api";
 
 import Avatar from "@material-ui/core/Avatar";
@@ -66,11 +66,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const mapStateToProps = state => {
-  return { token: state.token };
+  return { user: state.user };
 };
 
 const mapDispatchToProps = dispatch => ({
-  saveToken: token => dispatch(saveToken(token)),
   saveUser: user => dispatch(saveUser(user))
 });
 
@@ -92,12 +91,10 @@ const Login = props => {
       console.log(response.status);
       console.log(response.statusText);
       switch (response.status) {
-        case 200:
-          // OK
+        case 200: // OK
           response = await response.json();
-          props.saveUser(response.user);
           localStorage.setItem("token", response.token);
-          props.saveToken(response.token);
+          props.saveUser(response.user);
           break;
         default:
           console.log("Some error");
@@ -107,7 +104,7 @@ const Login = props => {
       alert(error.toString());
     }
   };
-  if (props.token) return <Redirect push to="/" />;
+  if (props.user) return <Redirect push to="/" />;
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
