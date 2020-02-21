@@ -8,7 +8,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { saveToken, saveUser } from "../actions";
 import CBRetrun from "./CBRetrun";
-import { refreshToken } from "./api";
+import { api_refreshToken } from "./api";
 
 const mapDispatchToProps = dispatch => ({
   saveToken: token => dispatch(saveToken(token)),
@@ -42,7 +42,7 @@ class MainComponent extends Component {
       this.props.saveToken(tokenFromStorage);
       let response;
       try {
-        response = await refreshToken(tokenFromStorage);
+        response = await api_refreshToken(tokenFromStorage);
         switch (response.status) {
           case 200:
             // OK

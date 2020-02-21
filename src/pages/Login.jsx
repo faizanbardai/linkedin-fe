@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { saveToken, saveUser } from "../actions";
-import { login } from "../components/api";
+import { api_login } from "../components/api";
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -87,7 +87,7 @@ const Login = props => {
         username,
         password
       };
-      response = await login(body);
+      response = await api_login(body);
       console.log(response);
       console.log(response.status);
       console.log(response.statusText);

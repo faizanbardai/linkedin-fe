@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { saveToken, saveUser } from "../actions";
-import { createAccount } from "../components/api";
+import { api_createAccount } from "../components/api";
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -71,7 +71,7 @@ const CreateAccount = props => {
         firstName,
         lastName
       };
-      response = await createAccount(body);
+      response = await api_createAccount(body);
     } catch (error) {
       //server down error
       alert(error.toString());
