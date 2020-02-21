@@ -50,3 +50,14 @@ export const api_getUserByID = async (_id, token) => {
     }
   });
 };
+
+export const api_updateProfileImage = async (body, token) => {
+  return await fetch(baseURL + "/user/uploadImage", {
+    method: "POST",
+    headers: {
+      // "Content-Type": "application/json",
+      Authorization: "Bearer " + token
+    },
+    body: body
+  });
+};

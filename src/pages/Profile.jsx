@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Card, Image, Button } from "react-bootstrap";
 import Experience from "../components/Experience";
 import UpdateProfile from "../components/UpdateProfile";
+import UpdateProfileImage from "../components/UpdateProfileImage";
 
 const mapStateToProps = state => {
   return {
@@ -12,7 +13,8 @@ const mapStateToProps = state => {
 };
 
 const Profile = props => {
-  const [show, setShow] = useState(false);
+  const [showProfileModel, setShowProfileModel] = useState(false);
+  const [showProfileImageModel, setShowProfileImageModel] = useState(false);
   if (props.token || localStorage.getItem("token")) {
     if (props.user) {
       const {
@@ -29,11 +31,26 @@ const Profile = props => {
           <div className="row d-flex justify-content-center">
             <div className="col-sm-12 col-md-3 mb-3">
               <Image
+                fluid
                 src={imageProfile}
                 className="p-4"
                 roundedCircle
                 style={{ width: "100%" }}
               />
+              <Button
+                onClick={() => setShowProfileImageModel(true)}
+                variant="outline-primary"
+                block
+                className="my-2 rounded-pill"
+              >
+                Update Image
+              </Button>
+              {props.user.imageProfile && (
+                <UpdateProfileImage
+                  show={showProfileImageModel}
+                  setShow={setShowProfileImageModel}
+                />
+              )}
               <Card>
                 <Card.Header>{title}</Card.Header>
                 <Card.Body>
@@ -45,7 +62,7 @@ const Profile = props => {
                 <Card.Footer className="text-muted">{area}</Card.Footer>
               </Card>
               <Button
-                onClick={() => setShow(true)}
+                onClick={() => setShowProfileModel(true)}
                 variant="outline-primary"
                 block
                 className="my-2 rounded-pill"
@@ -53,7 +70,10 @@ const Profile = props => {
                 Edit Profile
               </Button>
               {props.user.username && (
-                <UpdateProfile show={show} setShow={setShow} />
+                <UpdateProfile
+                  show={showProfileModel}
+                  setShow={setShowProfileModel}
+                />
               )}
             </div>
             <div className="col-sm-12 col-md-9">
