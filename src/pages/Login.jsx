@@ -104,7 +104,8 @@ const Login = props => {
       alert(error.toString());
     }
   };
-  if (props.user) return <Redirect push to="/" />;
+  if (localStorage.getItem("token") || props.user)
+    return <Redirect push to="/" />;
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />

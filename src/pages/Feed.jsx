@@ -12,22 +12,28 @@ const mapStateToProps = state => {
 };
 
 function Feed(props) {
-  if (localStorage.getItem("token") || props.user)
-    return (
-      <div>
-        I'll show all the <strong>feed</strong>.
-        <Link to="/profile">My Profile</Link>
-        <button
-          onClick={() => {
-            localStorage.removeItem("token");
-            props.saveUser(null);
-          }}
-        >
-          Logout
-        </button>
-      </div>
-    );
-  return <Redirect push to="/login" />;
+  if (props.authenticated) {
+    if (props.user) {
+      return (
+        <div>
+          I'll show all the <strong>feed</strong>.
+          <Link to="/profile">My Profile</Link>
+          <button
+            onClick={() => {
+              localStorage.removeItem("token");
+              props.saveUser(null);
+            }}
+          >
+            Logout
+          </button>
+        </div>
+      );
+    } else {
+      return <div>Loading...</div>;
+    }
+  } else {
+    return <Redirect push to="/login" />;
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Feed);

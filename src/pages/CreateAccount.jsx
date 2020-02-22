@@ -106,7 +106,8 @@ const CreateAccount = props => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  if (props.user) return <Redirect push to="/" />;
+  if (localStorage.getItem("token") || props.user)
+    return <Redirect push to="/" />;
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
