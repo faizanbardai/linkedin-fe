@@ -59,7 +59,7 @@ class MainComponent extends Component {
           case 401: // unauthorized
             localStorage.removeItem("token");
             this.props.saveUser(null);
-            this.setState({ authenticated: false });
+            this.toggleAuthenticated();
             break;
           default:
             console.log("Some error");

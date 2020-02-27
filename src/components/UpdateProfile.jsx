@@ -29,7 +29,7 @@ class UpdateProfile extends Component {
     e.preventDefault();
     const { firstName, lastName, title, bio, area } = this.state;
     const body = { firstName, lastName, title, bio, area };
-    await this.props.updateProfile(body, this.props.token);
+    await this.props.updateProfile(body, localStorage.getItem("token"));
     this.props.setShow();
   };
   componentDidMount = async () => {
