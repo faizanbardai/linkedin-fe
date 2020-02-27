@@ -19,17 +19,23 @@ const mapStateToProps = state => {
 };
 
 class MainComponent extends Component {
+  toggleAuthenticated = () => {
+    this.setState({ authenticated: !this.state.authenticated });
+  };
   state = { authenticated: localStorage.getItem("token") ? true : false };
   render() {
     return (
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Switch>
           <Route path="/" exact>
-            <Feed authenticated={this.state.authenticated} />
+            <Feed
+              authenticated={this.state.authenticated}
+              toggleAuthenticated={this.toggleAuthenticated}
+            />
           </Route>
           <Route path="/login" exact component={Login} />
           <Route path="/auth/facebook/callback/:accessToken" exact>
-            {this.props.user ? <Redirect to="/" /> : <CBRetrun />}
+            {this.state.authenticated ? <Redirect to="/" /> : <CBRetrun />}
           </Route>
           <Route path="/create-account" exact component={CreateAccount} />
           <Route path="/profile" component={Profile} />

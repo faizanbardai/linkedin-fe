@@ -21,6 +21,7 @@ function Feed(props) {
           <button
             onClick={() => {
               localStorage.removeItem("token");
+              props.toggleAuthenticated();
               props.saveUser(null);
             }}
           >
